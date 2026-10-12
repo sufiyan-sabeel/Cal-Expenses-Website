@@ -1,5 +1,8 @@
 # Cal Expenses — promotional website
 
+**Live site:** https://sufiyan-sabeel.github.io/Cal-Expenses-Website/
+**Web app:** https://sufiyan-sabeel.github.io/Cal-Expenses/
+
 A static, dependency-free promotional site for the **Cal Expenses** Android app,
 built for GitHub Pages. It introduces the app, shows its real features, and offers
 a direct APK download.
