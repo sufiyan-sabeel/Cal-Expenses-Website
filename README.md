@@ -10,12 +10,14 @@ No frameworks, no build step, no backend. Plain HTML, CSS and JavaScript.
 
 ```
 .
-├── index.html               # home page (hero, features, screenshots, download, install, about, FAQ)
+├── index.html               # home page (hero, features, screenshots, demo, download, install, about, FAQ)
 ├── privacy.html             # privacy policy
+├── LICENSE                  # MIT
 ├── assets/
-│   ├── css/styles.css       # the whole stylesheet
+│   ├── css/styles.css       # the whole stylesheet, including motion + demo
 │   ├── js/config.js         # ← THE ONE FILE TO EDIT (see below)
-│   ├── js/main.js           # applies the config, mobile menu, gallery
+│   ├── js/main.js           # applies the config, mobile menu, gallery, scroll motion
+│   ├── js/demo.js           # the interactive demo
 │   └── img/                 # logo, favicon, social image
 ├── downloads/               # the APK lives here
 ├── screenshots/             # put real screenshots here (see its README)
@@ -63,6 +65,24 @@ That keeps one source of truth for the APK rather than a second 6.6 MB copy in t
 
 Put the file in `downloads/`, then set `apkPath: "./downloads/<filename>"`. Relative paths
 keep working on a GitHub Pages project URL. See `downloads/README.md`.
+
+## Interactive demo
+
+The **Try it** section has two honest demos:
+
+1. **Screen walkthrough** — the real app screenshots in a phone frame. Arrows, dots, swipe
+   on touch, and left/right arrow keys all work. It auto-advances gently until the visitor
+   interacts, then stops.
+2. **Expense toy** — pick a category, choose an amount, add it, and watch the monthly total
+   and the category bars move. It uses made-up numbers, saves nothing, and is clearly
+   labelled as a demo. It does **not** touch the app or any real data.
+
+## Motion and accessibility
+
+Scroll reveals, a scroll-progress bar, nav elevation on scroll, press feedback and a subtle
+pointer tilt on the feature cards (desktop pointers only). All of it is disabled under
+`prefers-reduced-motion: reduce`, and every interactive control is a real `<button>` with a
+label so it works from the keyboard and with a screen reader.
 
 ## Preview locally
 
@@ -117,4 +137,4 @@ No ratings, user counts, certifications or awards are claimed anywhere.
 
 ## License
 
-No licence file is included. Add one if you intend to publish this under a specific licence.
+MIT — see [LICENSE](./LICENSE). Copyright (c) 2026 Umaiz Sufiyan.

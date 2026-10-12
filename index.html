@@ -44,6 +44,7 @@
     <nav class="nav-links" aria-label="Primary">
       <a href="#features">Features</a>
       <a href="#screenshots">Screenshots</a>
+      <a href="#demo">Demo</a>
       <a href="#about">About</a>
       <a href="#faq">FAQ</a>
     </nav>
@@ -61,6 +62,7 @@
   <div class="mobile-menu" id="mobileMenu">
     <a href="#features">Features</a>
     <a href="#screenshots">Screenshots</a>
+    <a href="#demo">Demo</a>
     <a href="#download">Download</a>
     <a href="#install">Install guide</a>
     <a href="#about">About</a>
@@ -127,13 +129,13 @@
 <!-- ============================== FEATURES ============================== -->
 <section class="section" id="features">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">Features</p>
       <h2>Everything you need to stay on top of your money</h2>
       <p>Built as a focused, offline-first Android app — no account to create, no subscription, no ads.</p>
     </div>
 
-    <div class="grid grid-3">
+    <div class="grid grid-3" data-reveal="60">
 
       <article class="card">
         <div class="card-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="6" width="19" height="13" rx="2.5"/><path d="M2.5 10h19"/><circle cx="17" cy="14.5" r="1.2"/></svg></div>
@@ -202,7 +204,7 @@
 <!-- ============================= SCREENSHOTS ============================= -->
 <section class="section" id="screenshots">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">Screenshots</p>
       <h2>A look at the app</h2>
       <p>
@@ -211,7 +213,7 @@
       </p>
     </div>
 
-    <div class="gallery" id="gallery">
+    <div class="gallery" id="gallery" data-reveal="60">
       <!-- Filled by assets/js/main.js from CAL_CONFIG.screenshots -->
     </div>
   </div>
@@ -219,10 +221,74 @@
 
 <hr class="divider">
 
+
+<!-- ================================ DEMO ================================ -->
+<section class="section" id="demo">
+  <div class="wrap">
+    <div class="section-head" data-reveal>
+      <p class="eyebrow">Try it</p>
+      <h2>Have a play with it</h2>
+      <p>
+        Tap or swipe through the real screens, or add a sample expense to see how the app
+        totals spending by category. The demo uses made-up numbers and is not connected
+        to the app.
+      </p>
+    </div>
+
+    <div class="demo-grid">
+      <!-- walkthrough of the real screenshots -->
+      <div class="demo-phone" data-reveal>
+        <div class="device">
+          <div class="device-screen" id="demoScreen">
+            <img id="demoImg" src="./screenshots/home.jpg"
+                 alt="Cal Expenses app screen" width="720" height="1608">
+          </div>
+        </div>
+        <div class="demo-controls">
+          <button type="button" id="demoPrev" aria-label="Previous screen">&#8249;</button>
+          <div class="demo-dots" id="demoDots" role="tablist" aria-label="App screens"></div>
+          <button type="button" id="demoNext" aria-label="Next screen">&#8250;</button>
+        </div>
+        <p class="demo-caption" id="demoCaption">Home</p>
+      </div>
+
+      <!-- expense toy -->
+      <div class="demo-calc" data-reveal="90">
+        <h3>Try adding an expense</h3>
+        <p class="hint">Pick a category, choose an amount, then add it.</p>
+
+        <div class="demo-cats" id="demoCats" role="group" aria-label="Category"></div>
+
+        <div class="demo-amount">
+          <label for="demoAmount">Amount</label>
+          <input id="demoAmount" type="range" min="10" max="2000" step="10" value="300">
+          <output id="demoAmountOut" for="demoAmount">&#8377;300</output>
+        </div>
+
+        <div class="demo-actions">
+          <button class="btn btn-primary" type="button" id="demoAdd">Add expense</button>
+          <button class="demo-reset" type="button" id="demoReset">Reset</button>
+        </div>
+
+        <div class="demo-total">
+          <span>This month</span>
+          <strong id="demoTotal">&#8377;0</strong>
+        </div>
+        <div class="demo-bars" id="demoBars" aria-hidden="true"></div>
+
+        <p class="demo-note">
+          Demo only &mdash; sample numbers that reset when you reload. Nothing is saved
+          and nothing here touches the real app.
+        </p>
+      </div>
+    </div>
+  </div>
+</section>
+
 <!-- ============================== DOWNLOAD =============================== -->
 <section class="section" id="download">
   <div class="wrap">
-    <div class="download-panel">
+    <div class="download-panel" data-reveal>
       <div class="download-grid">
         <div>
           <p class="eyebrow">Download</p>
@@ -267,12 +333,12 @@
 <!-- ============================ INSTALL GUIDE =========================== -->
 <section class="section" id="install">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">Install</p>
       <h2>Installing in three steps</h2>
     </div>
 
-    <div class="steps">
+    <div class="steps" data-reveal="60">
       <div class="step">
         <h3>Download the APK</h3>
         <p>Use the download button on this site so you are installing the official build.</p>
@@ -299,7 +365,7 @@
 <!-- =============================== ABOUT ================================ -->
 <section class="section" id="about">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">About</p>
       <h2>A privacy-first personal finance app</h2>
       <p>
@@ -309,7 +375,7 @@
       </p>
     </div>
 
-    <div class="grid grid-2">
+    <div class="grid grid-2" data-reveal="60">
       <article class="card">
         <h3>Where your data lives</h3>
         <p>
@@ -339,12 +405,12 @@
 <!-- ================================ FAQ ================================= -->
 <section class="section" id="faq">
   <div class="wrap">
-    <div class="section-head">
+    <div class="section-head" data-reveal>
       <p class="eyebrow">FAQ</p>
       <h2>Common questions</h2>
     </div>
 
-    <div class="faq">
+    <div class="faq" data-reveal="60">
       <details>
         <summary>Is this app free?</summary>
         <p>Yes. The app is free to download and use, with no subscription, no ads and no paid service required for any core feature.</p>
@@ -398,7 +464,7 @@
 <!-- =============================== FOOTER =============================== -->
 <footer class="footer">
   <div class="wrap">
-    <div class="footer-grid">
+    <div class="footer-grid" data-reveal>
       <div>
         <a class="brand" href="#top">
           <img src="./assets/img/logo.svg" alt="" width="34" height="34">
@@ -444,5 +510,6 @@
 
 <script src="./assets/js/config.js"></script>
 <script src="./assets/js/main.js"></script>
+<script src="./assets/js/demo.js"></script>
 </body>
 </html>

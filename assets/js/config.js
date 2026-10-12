@@ -11,6 +11,7 @@ window.CAL_CONFIG = {
   productShort: "Cal Expenses",
   tagline: "Personal expense tracker for Android",
   appVersion: "1.3",
+  currencySymbol: "\u20B9",   // used by the interactive demo
 
   /* ---- Where the site lives (used for canonical + Open Graph URLs) ---- */
   siteUrl: "https://sufiyan-sabeel.github.io/Cal-Expenses-Website/",

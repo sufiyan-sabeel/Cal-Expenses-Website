@@ -181,12 +181,75 @@
     });
   }
 
+
+  /* ------------------------------------------------------------- motion */
+  function initMotion() {
+    var reduce = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
+    // scroll progress bar + nav elevation
+    var bar = document.createElement("div");
+    bar.className = "scroll-progress";
+    document.body.appendChild(bar);
+    var nav = document.querySelector(".nav");
+
+    function onScroll() {
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = max > 0 ? (window.scrollY / max) * 100 : 0;
+      bar.style.width = pct.toFixed(2) + "%";
+      if (nav) nav.classList.toggle("scrolled", window.scrollY > 8);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    onScroll();
+
+    // scroll reveal
+    var targets = document.querySelectorAll("[data-reveal]");
+    if (!targets.length) return;
+
+    if (reduce || !("IntersectionObserver" in window)) {
+      Array.prototype.forEach.call(targets, function (el) { el.classList.add("reveal", "in"); });
+      return;
+    }
+
+    Array.prototype.forEach.call(targets, function (el) { el.classList.add("reveal"); });
+
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (entry) {
+        if (!entry.isIntersecting) return;
+        var el = entry.target;
+        var delay = Number(el.getAttribute("data-reveal")) || 0;
+        el.style.transitionDelay = delay + "ms";
+        el.classList.add("in");
+        io.unobserve(el);
+      });
+    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+
+    Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
+
+    // subtle pointer tilt on feature cards - desktop pointers only
+    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
+      Array.prototype.forEach.call(document.querySelectorAll(".card"), function (card) {
+        card.classList.add("tilt");
+        card.addEventListener("pointermove", function (ev) {
+          var r = card.getBoundingClientRect();
+          var rx = ((ev.clientY - r.top) / r.height - 0.5) * -3;
+          var ry = ((ev.clientX - r.left) / r.width - 0.5) * 3;
+          card.style.transform = "translateY(-2px) perspective(760px) rotateX(" +
+            rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg)";
+        });
+        card.addEventListener("pointerleave", function () { card.style.transform = ""; });
+      });
+    }
+  }
+
   /* --------------------------------------------------------------- boot */
   function boot() {
     applyConfig();
     initMenu();
     renderGallery();
     applyHeroShot();
+    initMotion();
   }
 
   if (document.readyState === "loading") {

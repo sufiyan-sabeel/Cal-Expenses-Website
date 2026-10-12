@@ -424,3 +424,161 @@ p  { margin: 0 0 1rem; }
 .mt-0 { margin-top: 0; }
 .mb-0 { margin-bottom: 0; }
 .nowrap { white-space: nowrap; }
+
+/* ============================================================================
+   Motion, touch feedback and the interactive demo
+   Everything here is subtle and is fully disabled under prefers-reduced-motion.
+   ==========================================================================*/
+
+/* scroll progress bar */
+.scroll-progress {
+  position: fixed; top: 0; left: 0; height: 3px; width: 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  z-index: 100; transition: width .08s linear;
+}
+
+/* sticky nav picks up weight once you scroll */
+.nav { transition: border-color .25s ease, box-shadow .25s ease; }
+.nav.scrolled { border-bottom-color: var(--border); box-shadow: 0 10px 30px -24px rgba(0,0,0,.95); }
+
+/* scroll reveal */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .65s ease, transform .65s cubic-bezier(.2,.7,.3,1);
+  will-change: opacity, transform;
+}
+.reveal.in { opacity: 1; transform: none; }
+
+/* touch / press feedback */
+.btn:active { transform: translateY(0) scale(.97); }
+.nav-links a:active { background: var(--surface-2); }
+
+/* gentle pointer tilt on desktop pointers only */
+@media (hover: hover) and (pointer: fine) {
+  .card { will-change: transform; }
+  .card.tilt { transition: transform .3s cubic-bezier(.2,.7,.3,1), border-color .18s ease; }
+}
+
+/* ------------------------------------------------------------ demo section */
+.demo-grid { display: grid; gap: 2.25rem; }
+@media (min-width: 900px) {
+  .demo-grid { grid-template-columns: .85fr 1.15fr; align-items: start; gap: 3rem; }
+}
+
+.demo-phone .device { width: min(268px, 74vw); margin-inline: auto; }
+.demo-phone .device-screen { padding: 0; position: relative; }
+.demo-phone .device-screen img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  animation: fadeIn .35s ease;
+}
+@keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+.demo-controls {
+  display: flex; align-items: center; justify-content: center;
+  gap: 1rem; margin-top: 1.1rem;
+}
+.demo-controls > button {
+  width: 40px; height: 40px; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface); color: var(--text);
+  font-size: 1.15rem; line-height: 1; cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease, transform .12s ease;
+}
+.demo-controls > button:hover { border-color: var(--accent-line); background: var(--accent-wash); }
+.demo-controls > button:active { transform: scale(.93); }
+
+.demo-dots { display: flex; gap: .5rem; align-items: center; }
+.demo-dots button {
+  width: 9px; height: 9px; padding: 0; border: 0; border-radius: 999px;
+  background: var(--border); cursor: pointer; transition: width .25s ease, background-color .25s ease;
+}
+.demo-dots button[aria-selected="true"] { background: var(--accent); width: 24px; }
+
+.demo-caption {
+  text-align: center; color: var(--text-dim); font-size: .9rem;
+  margin: .75rem 0 0; min-height: 1.4em;
+}
+
+.demo-calc {
+  position: relative;
+  background: var(--surface); border: 1px solid var(--border-soft);
+  border-radius: var(--radius); padding: 1.6rem;
+}
+.demo-calc h3 { margin-bottom: .35rem; }
+.demo-calc .hint { color: var(--muted); font-size: .88rem; margin-bottom: 1rem; }
+
+.demo-cats { display: flex; flex-wrap: wrap; gap: .5rem; margin-bottom: 1.1rem; }
+.demo-cat {
+  padding: .45rem .95rem; border-radius: 999px;
+  border: 1px solid var(--border); background: var(--surface-2);
+  color: var(--text-dim); font-size: .85rem; font-weight: 550; cursor: pointer;
+  transition: background-color .18s ease, border-color .18s ease, color .18s ease, transform .12s ease;
+}
+.demo-cat:active { transform: scale(.96); }
+.demo-cat[aria-pressed="true"] {
+  background: var(--accent-wash); border-color: var(--accent-line); color: var(--accent);
+}
+
+.demo-amount {
+  display: grid; grid-template-columns: auto 1fr auto; gap: .85rem;
+  align-items: center; margin-bottom: 1.1rem;
+}
+.demo-amount label { font-size: .85rem; color: var(--muted); }
+.demo-amount input[type="range"] { width: 100%; accent-color: var(--accent); cursor: pointer; }
+.demo-amount output {
+  font-weight: 700; font-variant-numeric: tabular-nums; min-width: 4.5rem; text-align: right;
+}
+
+.demo-actions { display: flex; align-items: center; gap: .75rem; flex-wrap: wrap; }
+.demo-reset {
+  background: none; border: 0; color: var(--muted); font-size: .85rem;
+  cursor: pointer; text-decoration: underline; padding: .4rem .2rem;
+}
+.demo-reset:hover { color: var(--text-dim); }
+
+.demo-total {
+  display: flex; justify-content: space-between; align-items: baseline;
+  margin-top: 1.4rem; padding-top: 1rem; border-top: 1px solid var(--border-soft);
+}
+.demo-total span { color: var(--muted); font-size: .88rem; }
+.demo-total strong {
+  font-size: 1.6rem; color: var(--accent);
+  font-variant-numeric: tabular-nums; letter-spacing: -.02em;
+}
+
+.demo-bars { display: flex; align-items: flex-end; gap: .6rem; height: 96px; margin-top: 1.1rem; }
+.demo-bars .bar { flex: 1; height: 100%; display: flex; flex-direction: column; justify-content: flex-end; align-items: center; gap: .4rem; }
+.demo-bars .bar i {
+  display: block; width: 100%; height: 4%; min-height: 4px;
+  border-radius: 6px 6px 0 0; background: var(--accent-2);
+  transition: height .5s cubic-bezier(.2,.7,.3,1);
+}
+.demo-bars .bar:nth-child(1) i { background: var(--accent); }
+.demo-bars .bar:nth-child(3) i { background: var(--green); }
+.demo-bars .bar span {
+  font-size: .62rem; color: var(--muted);
+  line-height: 1.15; text-align: center; word-break: break-word;
+}
+
+.demo-note { font-size: .78rem; color: var(--muted); margin: 1rem 0 0; }
+
+/* the little "+₹300" that floats up when you add an expense */
+.demo-fly {
+  position: absolute; right: 1.6rem; top: 5.2rem;
+  pointer-events: none; font-weight: 700; color: var(--green); font-size: .95rem;
+  animation: fly .9s ease forwards;
+}
+@keyframes fly {
+  0%   { opacity: 0; transform: translateY(6px) scale(.92); }
+  25%  { opacity: 1; }
+  100% { opacity: 0; transform: translateY(-44px) scale(1.06); }
+}
+
+/* --------------------------------------------------- reduced motion (last) */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1 !important; transform: none !important; transition: none !important; }
+  .scroll-progress { display: none !important; }
+  .demo-fly { display: none !important; }
+  .demo-bars .bar i { transition: none !important; }
+  .demo-phone .device-screen img { animation: none !important; }
+}
