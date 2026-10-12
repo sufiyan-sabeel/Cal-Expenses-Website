@@ -161,8 +161,9 @@
       var img = document.createElement("img");
       img.src = shot.src;
       img.alt = shot.alt || "";
-      img.loading = "lazy";
       img.decoding = "async";
+      img.width = 720;
+      img.height = 1608;
 
       var cap = document.createElement("figcaption");
       cap.innerHTML = shot.caption
@@ -226,6 +227,13 @@
     }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
 
     Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
+
+    // safety net: whatever happens, never leave content hidden
+    window.setTimeout(function () {
+      Array.prototype.forEach.call(targets, function (el) {
+        if (!el.classList.contains("in")) el.classList.add("in");
+      });
+    }, 1600);
 
     // subtle pointer tilt on feature cards - desktop pointers only
     if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
