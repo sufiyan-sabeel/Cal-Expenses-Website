@@ -77,6 +77,24 @@ The **Try it** section has two honest demos:
    and the category bars move. It uses made-up numbers, saves nothing, and is clearly
    labelled as a demo. It does **not** touch the app or any real data.
 
+## Smooth scrolling
+
+A small, dependency-free momentum scroller (`initSmoothScroll` in `assets/js/main.js`):
+
+- **Wheel scrolling** is eased toward its target with a frame-rate independent exponential
+  curve, which gives the page the glide of a premium product site rather than the browser's
+  stepped default.
+- **In-page anchor links** ease to their target on every device, offset for the sticky nav,
+  with keyboard focus moved to the target so screen-reader users land in the right place.
+- **Touch dragging is deliberately not hijacked.** Phones already have native momentum;
+  intercepting it makes scrolling feel worse. Since touch dragging never emits `wheel`
+  events, the smoothing simply never applies there.
+
+The stylesheet's `scroll-behavior: smooth` is switched to `auto` while the JS takes over —
+otherwise the browser would animate each step of the loop and fight it. If the script never
+runs, the CSS smooth scrolling still applies. Skipped entirely under
+`prefers-reduced-motion: reduce`.
+
 ## 3D scroll effect
 
 As you scroll, each section rises out of the page and straightens — it starts tilted in
@@ -107,7 +125,7 @@ The About section shows a creator card. Everything on it comes from `assets/js/c
 ## Motion and accessibility
 
 A scroll-progress bar, nav elevation on scroll, press feedback and a subtle pointer tilt on
-the feature cards (desktop pointers only), on top of the 3D scroll above. All of it is
+the feature cards, on top of the smooth scrolling and 3D scroll above. All of it is
 disabled under `prefers-reduced-motion: reduce`, and every interactive control is a real
 `<button>` with a label so it works from the keyboard and with a screen reader.
 

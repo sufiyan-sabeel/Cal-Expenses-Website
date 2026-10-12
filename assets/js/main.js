@@ -296,6 +296,104 @@
     }
   }
 
+  /* ------------------------------------------------------ smooth scrolling */
+  /* A small, dependency-free momentum scroller.
+   *
+   * - Wheel scrolling on desktop is eased toward the target with a
+   *   frame-rate independent exponential curve, which gives the page the
+   *   "glide" feel of a premium product site.
+   * - In-page anchor links ease to their target on every device, instead of
+   *   the browser's abrupt jump.
+   * - Touch dragging is deliberately NOT hijacked: phones already have native
+   *   momentum, and intercepting it makes scrolling feel worse, not better.
+   * - Skipped entirely under prefers-reduced-motion, and if this script never
+   *   runs the stylesheet's own scroll-behavior:smooth still applies.
+   */
+  function initSmoothScroll() {
+    var reduce = window.matchMedia &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    if (reduce) return;
+
+    // Our own scrollTo() calls must be instant, otherwise the stylesheet's
+    // scroll-behavior:smooth would animate each step and fight this loop.
+    document.documentElement.style.scrollBehavior = "auto";
+
+    var maxY = function () {
+      return Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+    };
+
+    var target = window.scrollY;
+    var current = target;
+    var running = false;
+    var last = 0;
+
+    function loop(ts) {
+      if (!last) last = ts;
+      var dt = Math.min(0.05, (ts - last) / 1000);   // clamp after a tab switch
+      last = ts;
+
+      var k = 1 - Math.exp(-dt * 8.5);               // frame-rate independent
+      current += (target - current) * k;
+
+      if (Math.abs(target - current) < 0.5) {
+        current = target;
+        window.scrollTo(0, Math.round(current));
+        running = false;
+        last = 0;
+        return;
+      }
+      window.scrollTo(0, current);
+      window.requestAnimationFrame(loop);
+    }
+
+    function glide(y) {
+      target = Math.max(0, Math.min(y, maxY()));
+      if (!running) {
+        current = window.scrollY;
+        running = true;
+        last = 0;
+        window.requestAnimationFrame(loop);
+      }
+    }
+
+    // stay in sync when something else scrolls (keyboard, scrollbar, browser)
+    window.addEventListener("scroll", function () {
+      if (!running) { target = window.scrollY; current = window.scrollY; }
+    }, { passive: true });
+
+    // ---- eased wheel scrolling ----
+    // No pointer-type gate is needed: touch dragging never emits wheel events,
+    // so phone scrolling keeps its native momentum either way.
+    window.addEventListener("wheel", function (ev) {
+      // let the browser handle pinch-zoom and horizontal-only gestures
+      if (ev.ctrlKey) return;
+      if (Math.abs(ev.deltaX) > Math.abs(ev.deltaY)) return;
+      ev.preventDefault();
+      glide(target + ev.deltaY);
+    }, { passive: false });
+
+    // ---- eased anchor navigation (all devices) ----
+    Array.prototype.forEach.call(document.querySelectorAll('a[href^="#"]'), function (a) {
+      a.addEventListener("click", function (ev) {
+        var id = (a.getAttribute("href") || "").slice(1);
+        var el = id ? document.getElementById(id) : null;
+        if (!el) return;
+
+        ev.preventDefault();
+        var nav = document.querySelector(".nav");
+        var offset = (nav ? nav.offsetHeight : 0) + 10;
+        glide(el.getBoundingClientRect().top + window.scrollY - offset);
+
+        if (window.history && window.history.pushState) {
+          window.history.pushState(null, "", "#" + id);
+        }
+        // keep keyboard focus in step with the scroll, without moving the view
+        el.setAttribute("tabindex", "-1");
+        el.focus({ preventScroll: true });
+      });
+    });
+  }
+
   /* --------------------------------------------------------------- boot */
   function boot() {
     applyConfig();
@@ -303,6 +401,7 @@
     renderGallery();
     applyHeroShot();
     initMotion();
+    initSmoothScroll();
   }
 
   if (document.readyState === "loading") {
