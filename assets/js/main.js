@@ -80,12 +80,26 @@
       }
     });
 
-    // canonical + social URL follow the configured site URL
+    // Canonical + social metadata follow the configured site URL, so the domain
+    // lives in exactly one place. Note that social crawlers do not run
+    // JavaScript: the values hard-coded in the HTML are what they actually
+    // read, and these lines only keep them in step if the domain changes here.
     if (CFG.siteUrl) {
       var canon = document.querySelector('link[rel="canonical"]');
       if (canon) canon.setAttribute("href", CFG.siteUrl);
+
       var ogUrl = document.querySelector('meta[property="og:url"]');
       if (ogUrl) ogUrl.setAttribute("content", CFG.siteUrl);
+
+      if (CFG.ogImagePath) {
+        var abs = CFG.siteUrl.replace(/\/?$/, "/") + CFG.ogImagePath.replace(/^\//, "");
+        ["og:image", "og:image:secure_url"].forEach(function (prop) {
+          var m = document.querySelector('meta[property="' + prop + '"]');
+          if (m) m.setAttribute("content", abs);
+        });
+        var tw = document.querySelector('meta[name="twitter:image"]');
+        if (tw) tw.setAttribute("content", abs);
+      }
     }
   }
 

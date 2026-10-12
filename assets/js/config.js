@@ -11,6 +11,10 @@ window.CAL_CONFIG = {
   productShort: "Cal Expenses",
   tagline: "Personal expense tracker for Android",
   appVersion: "1.3",
+
+  /* Path (relative to the site root) of the social preview image. main.js
+     resolves this against siteUrl and writes it into og:image/twitter:image. */
+  ogImagePath: "assets/og-cal-expenses.png",
   currencySymbol: "\u20B9",   // used by the interactive demo
 
   /* ---- Where the site lives (used for canonical + Open Graph URLs) ---- */

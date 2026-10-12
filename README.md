@@ -110,6 +110,46 @@ can be hidden. The whole thing is skipped under `prefers-reduced-motion: reduce`
 Tuning lives in `assets/js/main.js` (`initMotion`): the tilt angle, lift distance, scale and
 opacity range.
 
+## Social link previews
+
+When the site is shared, the preview card comes from Open Graph metadata in the `<head>` of
+each page. The image is `assets/og-cal-expenses.png` — 1200 x 630 PNG, built from the site's
+own colours, logo and typography, with a **real** screenshot of the app (not a mock-up).
+
+Everything is an **absolute HTTPS URL**. This matters: social crawlers do not run JavaScript
+and will not resolve relative paths, so a relative `og:image` silently produces no preview at
+all. Because this is a GitHub Pages *project* site, every path carries the
+`/Cal-Expenses-Website/` segment:
+
+```
+https://sufiyan-sabeel.github.io/Cal-Expenses-Website/assets/og-cal-expenses.png
+```
+
+The domain is defined once, in `config.js` as `siteUrl`, with the image path as
+`ogImagePath`; `main.js` copies them into the canonical link and the social tags. The values
+are also hard-coded correctly in the HTML, since crawlers never execute that script.
+
+### Refreshing a cached preview
+
+Social platforms cache previews aggressively, sometimes for weeks. After deploying, force a
+re-scrape with the relevant tool:
+
+| Platform | Tool |
+| --- | --- |
+| Facebook / Messenger / WhatsApp | Facebook Sharing Debugger — https://developers.facebook.com/tools/debug/ |
+| X (Twitter) | Card Validator — https://cards-dev.twitter.com/validator |
+| LinkedIn | Post Inspector — https://www.linkedin.com/post-inspector/ |
+| Telegram | Send the link to `@WebpageBot` |
+| Slack / Discord | Usually re-unfurl on the next paste; Slack has `/expand` in some clients |
+
+WhatsApp and iMessage have no public debugger — they refresh on their own schedule, so a
+new URL or a short delay is the only reliable way to force it.
+
+### Replacing the preview image
+
+Overwrite `assets/og-cal-expenses.png` at the same 1200 x 630 size. Keep the filename the
+same and no HTML needs to change.
+
 ## Your details
 
 The About section shows a creator card. Everything on it comes from `assets/js/config.js`:
