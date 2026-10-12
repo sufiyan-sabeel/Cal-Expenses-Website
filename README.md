@@ -77,12 +77,39 @@ The **Try it** section has two honest demos:
    and the category bars move. It uses made-up numbers, saves nothing, and is clearly
    labelled as a demo. It does **not** touch the app or any real data.
 
+## 3D scroll effect
+
+As you scroll, each section rises out of the page and straightens — it starts tilted in
+perspective (`rotateX`), lifted and slightly faded, and settles flat and fully opaque as it
+reaches the reading position. The hero device drifts with the scroll and tilts toward the
+pointer, and gallery cards lean gently toward the centre of the viewport.
+
+It is driven by a single `requestAnimationFrame` loop that only writes `transform` and
+`opacity`, so it stays cheap on a phone. Because the values are applied as inline styles from
+JavaScript, **if scripting fails the page simply renders flat and fully visible** — nothing
+can be hidden. The whole thing is skipped under `prefers-reduced-motion: reduce`.
+
+Tuning lives in `assets/js/main.js` (`initMotion`): the tilt angle, lift distance, scale and
+opacity range.
+
+## Your details
+
+The About section shows a creator card. Everything on it comes from `assets/js/config.js`:
+
+| Field | Purpose |
+| --- | --- |
+| `creatorName` | Displayed name |
+| `creatorInitials` | The two letters in the avatar square |
+| `creatorRole` | The line under the name |
+| `creatorBio` | The short paragraph |
+| `contactEmail` | Shown on the Contact link (set it to `""` to point at GitHub issues instead) |
+
 ## Motion and accessibility
 
-Scroll reveals, a scroll-progress bar, nav elevation on scroll, press feedback and a subtle
-pointer tilt on the feature cards (desktop pointers only). All of it is disabled under
-`prefers-reduced-motion: reduce`, and every interactive control is a real `<button>` with a
-label so it works from the keyboard and with a screen reader.
+A scroll-progress bar, nav elevation on scroll, press feedback and a subtle pointer tilt on
+the feature cards (desktop pointers only), on top of the 3D scroll above. All of it is
+disabled under `prefers-reduced-motion: reduce`, and every interactive control is a real
+`<button>` with a label so it works from the keyboard and with a screen reader.
 
 ## Preview locally
 

@@ -593,3 +593,57 @@ html.js .reveal.in { opacity: 1; transform: none; }
   .demo-bars .bar i { transition: none !important; }
   .demo-phone .device-screen img { animation: none !important; }
 }
+
+/* ============================================================================
+   3D scroll effect
+   ----------------------------------------------------------------------------
+   Sections rise out of the page and straighten as they scroll into view, the
+   hero device drifts with the scroll and tilts toward the pointer, and gallery
+   cards angle gently toward the centre. All of it is applied from JavaScript as
+   inline transforms, so if scripting fails everything simply renders flat and
+   fully visible. Disabled entirely under prefers-reduced-motion.
+   ==========================================================================*/
+[data-3d] {
+  transform-style: preserve-3d;
+  backface-visibility: hidden;
+}
+
+.hero .device { transform-style: preserve-3d; }
+
+/* gallery cards lean toward the viewport centre for a little depth */
+.gallery { transform-style: preserve-3d; }
+.shot { transform-style: preserve-3d; }
+
+/* ---------------------------------------------------------- creator card */
+.creator {
+  display: flex; gap: 1.25rem; align-items: flex-start;
+  background: var(--surface); border: 1px solid var(--border-soft);
+  border-radius: var(--radius); padding: 1.6rem; margin-top: 1.25rem;
+}
+.creator-avatar {
+  width: 62px; height: 62px; border-radius: 18px; flex: none;
+  display: grid; place-items: center;
+  background: var(--accent-wash); border: 1px solid var(--accent-line);
+  color: var(--accent); font-weight: 700; font-size: 1.25rem; letter-spacing: -0.02em;
+}
+.creator-body { min-width: 0; }
+.creator h3 { margin: 0 0 .15rem; }
+.creator .role { color: var(--accent); font-size: .84rem; font-weight: 600; margin-bottom: .55rem; }
+.creator p { color: var(--text-dim); font-size: .92rem; margin: 0 0 .8rem; }
+.creator-links { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .45rem .95rem; }
+.creator-links a {
+  font-size: .87rem; color: var(--text-dim);
+  display: inline-flex; align-items: center; gap: .35rem;
+}
+.creator-links a:hover { color: var(--accent); text-decoration: none; }
+.creator-links svg { width: 15px; height: 15px; color: var(--muted); flex: none; }
+.creator-links a:hover svg { color: var(--accent); }
+
+@media (max-width: 520px) {
+  .creator { flex-direction: column; gap: 1rem; }
+}
+
+/* reduced motion: no 3D at all */
+@media (prefers-reduced-motion: reduce) {
+  [data-3d], .hero .device, .shot { transform: none !important; opacity: 1 !important; }
+}

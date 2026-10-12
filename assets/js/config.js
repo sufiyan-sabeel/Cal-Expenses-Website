@@ -61,12 +61,22 @@ window.CAL_CONFIG = {
    * Leave contactEmail empty to show the GitHub issues link instead.
    * Set it (e.g. "hello@yourdomain.com") once you have an address to publish.
    * ----------------------------------------------------------------------*/
-  contactEmail: "",
+  contactEmail: "riyazo65ckm@gmail.com",
 
   /* ---- Links ---- */
   repoUrl: "https://github.com/sufiyan-sabeel/Cal-Expenses-Website",
   appRepoUrl: "https://github.com/sufiyan-sabeel/Cal-Expenses-Android",
   releaseUrl: "https://github.com/sufiyan-sabeel/Cal-Expenses-Android/releases/tag/v1.3",
+
+  /* ---- Creator -----------------------------------------------------------
+   * Shown in the About section. Edit these to change what is displayed.
+   * Set contactEmail to "" to hide the address and point Contact at GitHub
+   * issues instead.
+   * ----------------------------------------------------------------------*/
+  creatorName: "Umaiz Sufiyan",
+  creatorInitials: "US",
+  creatorRole: "Creator & developer of Cal Expenses",
+  creatorBio: "I build privacy-first tools that work offline, need no account and stay free.",
 
   /* ---- Footer ---- */
   copyrightYear: "2026",

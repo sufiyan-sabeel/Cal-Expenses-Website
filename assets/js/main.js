@@ -39,6 +39,10 @@
     setText('[data-text="minAndroid"]', CFG.minAndroid);
     setText('[data-text="copyrightYear"]', CFG.copyrightYear);
     setText('[data-text="creator"]', CFG.creator);
+    setText('[data-text="creatorName"]', CFG.creatorName);
+    setText('[data-text="creatorInitials"]', CFG.creatorInitials);
+    setText('[data-text="creatorRole"]', CFG.creatorRole);
+    setText('[data-text="creatorBio"]', CFG.creatorBio);
 
     // links
     var hrefs = {
@@ -204,50 +208,91 @@
     window.addEventListener("resize", onScroll);
     onScroll();
 
-    // scroll reveal
-    var targets = document.querySelectorAll("[data-reveal]");
-    if (!targets.length) return;
+    // ---- 3D scroll ------------------------------------------------------
+    // Sections rise out of the page and straighten as they enter the viewport,
+    // the hero device drifts with the scroll and tilts toward the pointer, and
+    // gallery cards lean toward the centre. Everything is written as inline
+    // transforms from JS, so with no scripting the page renders flat and fully
+    // visible. Skipped entirely under prefers-reduced-motion.
+    var items3d = Array.prototype.slice.call(document.querySelectorAll("[data-3d]"));
+    var device = document.querySelector(".hero .device");
+    var shots = Array.prototype.slice.call(document.querySelectorAll(".shot"));
+    var finePointer = window.matchMedia("(hover: hover) and (pointer: fine)").matches;
+    var pointer = { x: 0, y: 0 };
 
-    if (reduce || !("IntersectionObserver" in window)) {
-      Array.prototype.forEach.call(targets, function (el) { el.classList.add("reveal", "in"); });
-      return;
+    function clamp01(v) { return v < 0 ? 0 : (v > 1 ? 1 : v); }
+
+    function paint() {
+      var vh = window.innerHeight;
+
+      // sections: rise + straighten
+      for (var i = 0; i < items3d.length; i++) {
+        var el = items3d[i];
+        var r = el.getBoundingClientRect();
+        if (r.bottom < -240 || r.top > vh + 240) continue;
+        var p = clamp01((vh - r.top) / (vh - vh * 0.45));
+        var e = 1 - p;
+        el.style.transform =
+          "perspective(1000px) rotateX(" + (e * 13).toFixed(2) + "deg)" +
+          " translateY(" + (e * 58).toFixed(1) + "px)" +
+          " scale(" + (0.94 + p * 0.06).toFixed(4) + ")";
+        el.style.opacity = (0.15 + p * 0.85).toFixed(3);
+      }
+
+      // hero device: parallax + pointer tilt
+      if (device) {
+        var dy = Math.min(window.scrollY, 900) * -0.075;
+        device.style.transform =
+          "perspective(1000px)" +
+          " rotateX(" + (-pointer.y * 5).toFixed(2) + "deg)" +
+          " rotateY(" + (pointer.x * 7).toFixed(2) + "deg)" +
+          " translateY(" + dy.toFixed(1) + "px)";
+      }
+
+      // gallery cards lean toward the centre of the viewport
+      if (finePointer) {
+        var cx = window.innerWidth / 2;
+        for (var j = 0; j < shots.length; j++) {
+          var s = shots[j];
+          var sr = s.getBoundingClientRect();
+          if (sr.bottom < -120 || sr.top > vh + 120) continue;
+          var dx = ((sr.left + sr.width / 2) - cx) / window.innerWidth;
+          s.style.transform = "perspective(800px) rotateY(" + (dx * 11).toFixed(2) + "deg)";
+        }
+      }
     }
 
-    Array.prototype.forEach.call(targets, function (el) { el.classList.add("reveal"); });
+    var ticking = false;
+    function onFrame() {
+      if (ticking) return;
+      ticking = true;
+      window.requestAnimationFrame(function () { ticking = false; paint(); });
+    }
 
-    var io = new IntersectionObserver(function (entries) {
-      entries.forEach(function (entry) {
-        if (!entry.isIntersecting) return;
-        var el = entry.target;
-        var delay = Number(el.getAttribute("data-reveal")) || 0;
-        el.style.transitionDelay = delay + "ms";
-        el.classList.add("in");
-        io.unobserve(el);
-      });
-    }, { rootMargin: "0px 0px -8% 0px", threshold: 0.06 });
+    if (!reduce) {
+      window.addEventListener("scroll", onFrame, { passive: true });
+      window.addEventListener("resize", onFrame);
+      window.addEventListener("pointermove", function (ev) {
+        pointer.x = (ev.clientX / window.innerWidth) - 0.5;
+        pointer.y = (ev.clientY / window.innerHeight) - 0.5;
+        onFrame();
+      }, { passive: true });
 
-    Array.prototype.forEach.call(targets, function (el) { io.observe(el); });
-
-    // safety net: whatever happens, never leave content hidden
-    window.setTimeout(function () {
-      Array.prototype.forEach.call(targets, function (el) {
-        if (!el.classList.contains("in")) el.classList.add("in");
-      });
-    }, 1600);
-
-    // subtle pointer tilt on feature cards - desktop pointers only
-    if (window.matchMedia("(hover: hover) and (pointer: fine)").matches) {
-      Array.prototype.forEach.call(document.querySelectorAll(".card"), function (card) {
-        card.classList.add("tilt");
-        card.addEventListener("pointermove", function (ev) {
-          var r = card.getBoundingClientRect();
-          var rx = ((ev.clientY - r.top) / r.height - 0.5) * -3;
-          var ry = ((ev.clientX - r.left) / r.width - 0.5) * 3;
-          card.style.transform = "translateY(-2px) perspective(760px) rotateX(" +
-            rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg)";
+      // pointer tilt on feature cards, desktop pointers only
+      if (finePointer) {
+        Array.prototype.forEach.call(document.querySelectorAll(".card"), function (card) {
+          card.addEventListener("pointermove", function (ev) {
+            var r = card.getBoundingClientRect();
+            var rx = ((ev.clientY - r.top) / r.height - 0.5) * -3;
+            var ry = ((ev.clientX - r.left) / r.width - 0.5) * 3;
+            card.style.transform = "translateY(-2px) perspective(760px) rotateX(" +
+              rx.toFixed(2) + "deg) rotateY(" + ry.toFixed(2) + "deg)";
+          });
+          card.addEventListener("pointerleave", function () { card.style.transform = ""; });
         });
-        card.addEventListener("pointerleave", function () { card.style.transform = ""; });
-      });
+      }
+
+      paint();
     }
   }
 
