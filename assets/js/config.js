@@ -32,20 +32,29 @@ window.CAL_CONFIG = {
   minAndroid: "Android 7.0 (API 24) or newer",
 
   /* ---- Screenshots -------------------------------------------------------
-   * EMPTY ON PURPOSE. No real Cal Expenses screenshots were supplied, and the
-   * reference images used for design inspiration belong to other apps, so they
-   * are deliberately NOT shown as this app's UI.
+   * Real captures from the Cal Expenses app running on Android. The first entry
+   * is also shown inside the hero device frame.
    *
-   * To add real screenshots: put the images in ./screenshots/ then list them
-   * here. The gallery renders whatever is listed and shows a tidy placeholder
-   * while the list is empty.
-   *
-   *   screenshots: [
-   *     { src: "./screenshots/dashboard.png", alt: "Home dashboard showing balance, income and expenses", caption: "Home" },
-   *     { src: "./screenshots/transactions.png", alt: "Transactions grouped by date with filter chips", caption: "Transactions" }
-   *   ],
+   * To replace or add: drop the image into ./screenshots/ and add an entry here.
+   * Keep them around 720px wide (about 9:20) so the gallery stays light.
    * ----------------------------------------------------------------------*/
-  screenshots: [],
+  screenshots: [
+    { src: "./screenshots/home.jpg",
+      alt: "Cal Expenses home screen showing the October balance, income and expenses, quick add buttons and a six-month spending chart",
+      caption: "Home" },
+    { src: "./screenshots/transactions.jpg",
+      alt: "Transactions screen with a search field, All/Expenses/Income/Transfers filter chips and entries grouped under Today",
+      caption: "Transactions" },
+    { src: "./screenshots/budgets.jpg",
+      alt: "Budgets screen showing the total monthly budget, the amount remaining and a per-category progress bar",
+      caption: "Budgets" },
+    { src: "./screenshots/reports.jpg",
+      alt: "Reports screen with the month summary, a six-month trend chart and an Export PDF report button",
+      caption: "Reports" },
+    { src: "./screenshots/cal-ai.jpg",
+      alt: "Cal AI assistant screen with suggested prompts and an optional spending-summary switch",
+      caption: "Cal AI" }
+  ],
 
   /* ---- Contact -----------------------------------------------------------
    * Leave contactEmail empty to show the GitHub issues link instead.

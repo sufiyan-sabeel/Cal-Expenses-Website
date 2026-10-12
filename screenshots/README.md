@@ -1,24 +1,27 @@
-# Screenshots
+# screenshots/
 
-This folder is empty on purpose.
+Real captures from the Cal Expenses app running on Android:
 
-No real Cal Expenses screenshots were available when the site was built, and the
-reference images used for visual inspiration belong to other applications, so
-they are deliberately **not** presented as this app's interface.
+| File | Screen |
+| --- | --- |
+| `home.jpg` | Home dashboard |
+| `transactions.jpg` | Transactions |
+| `budgets.jpg` | Budgets |
+| `reports.jpg` | Reports |
+| `cal-ai.jpg` | Cal AI assistant |
 
-## How to add real screenshots
+They are listed in `../assets/js/config.js` under `screenshots`. The first entry is also
+shown inside the hero device frame, and the captions come from each entry's `caption`.
 
-1. Take screenshots on your device (Power + Volume Down) or from an emulator.
-2. Save them here, e.g. `dashboard.png`, `transactions.png`, `budgets.png`.
-3. Open `../assets/js/config.js` and fill in the `screenshots` array:
+## Replacing or adding screenshots
+
+1. Save the new image here (roughly 720px wide, 9:20 ratio, under ~120 KB).
+2. Add or edit the matching entry in `CAL_CONFIG.screenshots`:
 
 ```js
-screenshots: [
-  { src: "./screenshots/dashboard.png",    alt: "Home dashboard showing balance, income and expenses", caption: "Home" },
-  { src: "./screenshots/transactions.png", alt: "Transactions grouped by date with filter chips",     caption: "Transactions" },
-  { src: "./screenshots/budgets.png",      alt: "Monthly budget with per-category progress bars",     caption: "Budgets" }
-]
+{ src: "./screenshots/goals.jpg",
+  alt: "Goals screen showing savings goals with percentage progress",
+  caption: "Goals" }
 ```
 
-That is the only change needed - the gallery on the home page renders whatever is
-listed there. Keep images around 1080x2160 (or any 9:19.5 ratio) and under ~300 KB each.
+Keep the `alt` text descriptive — it is what screen-reader users hear.
